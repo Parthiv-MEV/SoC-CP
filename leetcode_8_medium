@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int myAtoi(string s) {
+        int sign=1;
+        bool gotsign=false;
+        long long int n = 0;
+        bool done=false, started=false;
+        for(char c:s) {
+            bool validsign={!started&&(c=='+'||c=='-')&&!gotsign};
+            bool X=('0'<=c && c<='9');
+
+
+            if(c=='-'&&validsign) {sign=-1; gotsign=true;}
+            if(c=='+'&&validsign) {gotsign=true;}
+
+
+            if((!X&&!validsign&&c!=' ')||(c==' '&&(started||gotsign))) {
+                done=true; return sign*n;
+            }
+            
+            if(X && !done) {
+                if((n*10+c-'0')*sign<2147483647 && ((n*10+c-'0')*sign>-2147483648)) {
+                n=n*10+c-'0'; started=true;}
+                else {
+                    if((n*10+c-'0')*sign>=2147483647) n=2147483647;
+                    else n=-2147483648;
+                    done=true; return n;
+                }
+            }
+        }
+        
+        return sign*n;
+
+        }
+    };
